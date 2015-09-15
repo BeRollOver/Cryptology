@@ -1,0 +1,28 @@
+﻿@model Cryptology.Models.MersennePrimeModel
+@{
+    ViewBag.Title = "Mersenne Prime";
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title></title>
+</head>
+<body>
+    <div class="panel-success">
+        <div class="panel-body">
+            @using (Html.BeginForm())
+            {
+                @Html.ValidationSummary()
+                <label>Введите p:</label>
+                <div class="form-group">
+                    @Html.TextBoxFor(x => x.p, new { @class = "form-control" })
+                </div>
+                <button type="submit" class="btn btn-default">Проверить</button>
+            }
+        </div>
+    </div>
+    </body>
+</html>
