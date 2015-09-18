@@ -1,0 +1,64 @@
+﻿@model Cryptology.Models.EuclideanAlgorithmModels
+
+@{
+    ViewBag.Title = "Euclidean Algorithm";
+    long[] u = new long[] { 0, 1, Model.n };
+    long[] v = new long[] { 1, 0, Model.a };
+    long q, t;
+}
+
+<h2>Вычисление обратного элемента по алгоритму Евклида</h2>
+<h3>a=@Model.a.ToString(), n=@Model.n.ToString()</h3>
+
+<table class="table table-striped table-bordered table-condensed">
+    <tr>
+    <th>q</th>
+
+    <th>U<sub>1</sub></th>
+    <th>U<sub>2</sub></th>
+    <th>U<sub>3</sub></th>
+
+    <th>V<sub>1</sub></th>
+    <th>V<sub>2</sub></th>
+    <th>V<sub>3</sub></th>
+    </tr>
+    @while (u[2] != 1 && u[2] != 0 && v[2] != 0)
+    {
+        q = u[2] / v[2];
+        for (int i = 0; i < 3; i++)
+        {
+            t = u[i] - q * v[i];
+            u[i] = v[i];
+            v[i] = t;
+        }
+        <tr>
+            <td>@q</td>
+            @for (int i = 0; i < 3; i++)
+            {
+                <td>@u[i].ToString()</td>
+            }
+            @for (int i = 0; i < 3; i++)
+            {
+                <td>@v[i].ToString()</td>
+            }
+        </tr>
+    }
+</table>
+@if (u[0] < 0)
+{
+    u[0] = Model.n + u[0];
+}
+@if (u[2] == 1)
+{
+    <p class="lead text-center">Обратный элемент равен a<sup>-1</sup>=@u[0].ToString()</p>
+
+    <h2>Проверка:</h2>
+
+    <p class="lead">a*a<sup>-1</sup> mod n = @Model.a.ToString() * @u[0].ToString() mod @Model.n.ToString() = @((Model.a * u[0]) % Model.n)</p>
+    <p class="text-muted">Проверка верна, если значение выше стоящего выражения равно единице.</p>
+        }
+        else
+        {
+    <p class="lead text-center">Обратный элемент числа @Model.a при нормировании результата по модулю @Model.n
+ не существует</p>
+}

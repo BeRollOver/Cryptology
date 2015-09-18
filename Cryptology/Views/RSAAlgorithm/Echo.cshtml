@@ -1,0 +1,55 @@
+﻿@model Cryptology.Models.RSAAlgorithmModels
+
+@{
+    ViewBag.Title = "RSA Algorithm";
+}
+
+<h2>RSA Algorithm</h2>
+
+<table class="table table-bordered table-striped">
+    <tr>
+        <th style="width:50%;">
+            Пользователь A
+        </th>
+        <th>
+            Пользователь B
+        </th>
+    </tr>
+    <tr>
+        <!--Пользователь A-->
+        <td>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td>
+                        Пользователь A принял открытый ключ K<sub>o</sub>=@Model.Ko и N=@Model.N
+                    </td>
+                </tr>
+            </table>
+        </td>
+        <!--Пользователь B-->
+        <td>
+            <table class="table table-bordered table-striped">
+                <tr>
+                    <td>
+                        Пользователь B выбрал числа P=@Model.P и Q=@Model.Q
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Вычисляем N=@Model.N
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Вычисляем функцию Эйлера ф(N)=@Model.F
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Открытый ключ K<sub>o</sub>=@Model.Ko соответствует условиям.
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>

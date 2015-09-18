@@ -7,16 +7,15 @@ using Cryptology.Models;
 
 namespace Cryptology.Controllers
 {
-    public class MersennePrimeController : Controller
+    public class EuclideanAlgorithmController : Controller
     {
-        // GET: MersennePrimzahl
-        [HttpGet]
+        // GET: EuclideanAlgorithm
         public ActionResult Index()
         {
             return View();
         }
         [HttpPost]
-        public ActionResult Index(MersennePrimeModels model)
+        public ActionResult Index(EuclideanAlgorithmModels model)
         {
             if (ModelState.IsValid)
             {
