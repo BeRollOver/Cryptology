@@ -11,7 +11,8 @@ namespace Cryptology.Models
     {
         [Required]
         [Display(Name = "Текст для шифрования: ")]
-        public string TextA { get; set; }
+        [RegularExpression("[а-яА-Я]{3,40}$")]
+        public string Text { get; set; }
         [Required]
         public long P { get; set; }
         [Required]
@@ -19,14 +20,5 @@ namespace Cryptology.Models
         [Required]
         [Display(Name = "Открытый ключ: ")]
         public long Ko { get; set; }
-        
-        public long N { get; private set; }
-        public long F { get; private set; }
-        
-        public void Set()
-        {
-            N = P * Q;
-            F = (P - 1) * (Q - 1);
-        }
     }
 }

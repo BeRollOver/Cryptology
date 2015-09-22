@@ -6,29 +6,13 @@
 
 <h2>RSA Algorithm</h2>
 
-<table class="table table-bordered table-striped">
-    <tr>
-        <th style="width:50%;">
-            Пользователь A
-        </th>
-        <th>
-            Пользователь B
-        </th>
-    </tr>
-    <tr>
-        <!--Пользователь A-->
-        <td>
-            <table class="table table-bordered table-striped">
-                <tr>
-                    <td>
-                        Пользователь A принял открытый ключ K<sub>o</sub>=@Model.Ko и N=@Model.N
-                    </td>
+
+            <table class="table table-bordered" style="font-size:larger;">
+                <tr class="success">
+                    <th>
+                        Пользователь B
+                    </th>
                 </tr>
-            </table>
-        </td>
-        <!--Пользователь B-->
-        <td>
-            <table class="table table-bordered table-striped">
                 <tr>
                     <td>
                         Пользователь B выбрал числа P=@Model.P и Q=@Model.Q
@@ -36,12 +20,12 @@
                 </tr>
                 <tr>
                     <td>
-                        Вычисляем N=@Model.N
+                        Вычисляем N=@ViewBag.N
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        Вычисляем функцию Эйлера ф(N)=@Model.F
+                        Вычисляем функцию Эйлера ф(N)=@ViewBag.F
                     </td>
                 </tr>
                 <tr>
@@ -49,7 +33,75 @@
                         Открытый ключ K<sub>o</sub>=@Model.Ko соответствует условиям.
                     </td>
                 </tr>
+                <tr>
+                    <td>
+                        Вычисляем закрытый ключ K<sub>c</sub>=@ViewBag.Kc
+                    </td>
+                </tr>
+                <tr class="success">
+                    <th>
+                        Пользователь A
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Пользователь A принял открытый ключ K<sub>o</sub>=@Model.Ko и N=@ViewBag.N
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Разбиваем исходный текст на блоки:
+                        <table>
+                            <tr>
+                                @foreach (var item in Model.Text.ToCharArray())
+                                {
+                                    <th>@item</th>
+                                }
+                            </tr>
+                            <tr>
+                                @foreach (var item in Model.Text.ToCharArray())
+                                {
+                                    <td>@(item - 1040)</td>
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Преобразуем последовательность чисел с помощью открытого ключа по схеме Горнера:
+                        <table>
+                            <tr>
+                                @foreach (var item in ViewBag.C)
+                                {
+                                    <td>@item</td>
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="success">
+                    <th>
+                        Пользователь B
+                    </th>
+                </tr>
+                <tr>
+                    <td>
+                        Расшифровываем принятую криптограмму с помощью секретного ключа  K<sub>c</sub>=@ViewBag.Kc
+                        <table>
+                            <tr>
+                                @foreach (var item in ViewBag.M)
+                                {
+                                    <td>@(item - 1040)</td>
+                                }
+                            </tr>
+                            <tr>
+                                @foreach (var item in ViewBag.M)
+                                {
+                                    <th>@Convert.ToChar(item)</th>
+                                }
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
             </table>
-        </td>
-    </tr>
-</table>
