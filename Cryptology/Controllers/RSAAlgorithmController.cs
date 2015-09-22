@@ -29,15 +29,13 @@ namespace Cryptology.Controllers
                 N = model.P * model.Q;
                 F = (model.P - 1) * (model.Q - 1);
 
-                if (gcd(F, model.Ko) != 1)
+                if (GCD(F, model.Ko) != 1)
                 {
                     return View("Index");
                 }
 
-                // Алгоритм вычисления обратного элемента для небольших чисел
-                int t;
-                for (t = 0; (F * t + 1) % model.Ko != 0; t++) ;
-                Kc = (F * t + 1) / model.Ko;
+                // Секретный ключ
+                Kc = InverseElement(model.Ko, F);
 
                 // Шифрование
                 C = from sim in model.Text.ToCharArray()
@@ -60,15 +58,23 @@ namespace Cryptology.Controllers
         }
 
         // малый Алгоритм Евклида
-        long gcd(long a, long b)
+        public long GCD(long a, long b)
         {
             while (b != 0)
                 b = a % (a = b);
             return a;
         }
-        
+
+        // Алгоритм вычисления обратного элемента для небольших чисел
+        public long InverseElement(long a, long n)
+        {
+            int t;
+            for (t = 0; (n * t + 1) % a != 0; t++) ;
+            return (n * t + 1) / a;
+        }
+
         // схема Горнера
-        long HornersMethod(long a, long x, long m)
+        public long HornersMethod(long a, long x, long m)
         {
             long y = (x % 2 == 1) ? a : 1, r = a;
             if (m == 0) throw new Exception("DivideByZero");
