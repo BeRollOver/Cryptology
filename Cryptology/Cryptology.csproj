@@ -175,6 +175,7 @@
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MersennePrimeController.cs" />
     <Compile Include="Controllers\RSAAlgorithmController.cs" />
+    <Compile Include="Controllers\RSASAController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -252,6 +253,8 @@
     <Content Include="Views\ElGamalAlgorithm\Echo.cshtml" />
     <Content Include="Views\ElGamalAlgorithm\Index.cshtml" />
     <Content Include="Views\ElGamalAlgorithm\Input.cshtml" />
+    <Content Include="Views\RSASA\Index.cshtml" />
+    <Content Include="Views\RSASA\Echo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
