@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Cryptology.Models
 {
-    public class ElGamalEncryptionModels
+    public class ElGamalAlgorithmModels
     {
         [Display(Name = "Текст для шифрования: ")]
         [RegularExpression("[а-яА-Я]{3,40}$")]

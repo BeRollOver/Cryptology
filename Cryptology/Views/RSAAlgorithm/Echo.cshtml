@@ -2,6 +2,8 @@
 
 @{
     ViewBag.Title = "RSA Algorithm";
+    var C = new List<long>(ViewBag.C);
+    var M = new List<long>(ViewBag.M);
 }
 
 <h2>RSA Algorithm</h2>
@@ -30,7 +32,7 @@
                 </tr>
                 <tr>
                     <td>
-                        Открытый ключ K<sub>o</sub>=@Model.Ko соответствует условиям.
+                        Открытый ключ K<sub>o</sub>=@Model.Ko соответствует условиям 1 < K<sub>o</sub> < ф(N) и НОД(K<sub>o</sub>, ф(N))=1
                     </td>
                 </tr>
                 <tr>
@@ -50,28 +52,28 @@
                 </tr>
                 <tr>
                     <td>
-                        Разбиваем исходный текст на блоки:
-                        <table>
+                        Разбиваем исходный текст на блоки чисел. Преобразуем последовательность чисел с помощью открытого ключа по схеме Горнера:
+                        @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+                        {
+                            <p>С<sub>@i</sub> = M<sub>@i</sub><sup>K<sub>o</sub></sup> mod N = @(Convert.ToInt32(Model.Text.ToCharArray()[i]) - 1040)<sup>@Model.Ko</sup> mod @ViewBag.N = @C[i]</p>
+                        }
+                        <table class="table-bordered">
                             <tr>
+                                <th>Исходный текст</th>
                                 @foreach (var item in Model.Text.ToCharArray())
                                 {
                                     <th>@item</th>
                                 }
                             </tr>
                             <tr>
+                                <td>Преобразованная последовательность чисел</td>
                                 @foreach (var item in Model.Text.ToCharArray())
                                 {
                                     <td>@(item - 1040)</td>
                                 }
                             </tr>
-                        </table>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Преобразуем последовательность чисел с помощью открытого ключа по схеме Горнера:
-                        <table>
                             <tr>
+                                <td>Зашифрованная последовательность чисел</td>
                                 @foreach (var item in ViewBag.C)
                                 {
                                     <td>@item</td>
@@ -87,15 +89,28 @@
                 </tr>
                 <tr>
                     <td>
-                        Расшифровываем принятую криптограмму с помощью секретного ключа  K<sub>c</sub>=@ViewBag.Kc
-                        <table>
+                        <p>Расшифровываем принятую криптограмму с помощью секретного ключа  K<sub>c</sub>=@ViewBag.Kc</p>
+                        @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+                        {
+                            <p>M<sub>@i</sub> = C<sub>@i</sub><sup>K<sub>c</sub></sup> mod N = @C[i]<sup>@ViewBag.Kc</sup> mod @ViewBag.N = @(M[i] - 1040)</p>
+                        }
+                        <table class="table-bordered">
                             <tr>
+                                <td>Зашифрованная последовательность чисел</td>
+                                @foreach (var item in ViewBag.C)
+                                {
+                                    <td>@item</td>
+                                }
+                            </tr>
+                            <tr>
+                                <td>Расшифрованная последовательность чисел</td>
                                 @foreach (var item in ViewBag.M)
                                 {
                                     <td>@(item - 1040)</td>
                                 }
                             </tr>
                             <tr>
+                                <th>Расшифрованный текст</th>
                                 @foreach (var item in ViewBag.M)
                                 {
                                     <th>@Convert.ToChar(item)</th>

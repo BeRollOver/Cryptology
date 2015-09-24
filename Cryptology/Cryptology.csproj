@@ -169,7 +169,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
-    <Compile Include="Controllers\ElGamalEncryptionController.cs" />
+    <Compile Include="Controllers\ElGamalAlgorithmController.cs" />
     <Compile Include="Controllers\EuclideanAlgorithmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -179,7 +179,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\ElGamalEncryptionModels.cs" />
+    <Compile Include="Models\ElGamalAlgorithmModels.cs" />
     <Compile Include="Models\EuclideanAlgorithmModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -249,9 +249,9 @@
     <Content Include="Views\EuclideanAlgorithm\Echo.cshtml" />
     <Content Include="Views\RSAAlgorithm\Echo.cshtml" />
     <Content Include="Views\RSAAlgorithm\Index.cshtml" />
-    <Content Include="Views\ElGamalEncryption\Echo.cshtml" />
-    <Content Include="Views\ElGamalEncryption\Index.cshtml" />
-    <Content Include="Views\ElGamalEncryption\Input.cshtml" />
+    <Content Include="Views\ElGamalAlgorithm\Echo.cshtml" />
+    <Content Include="Views\ElGamalAlgorithm\Index.cshtml" />
+    <Content Include="Views\ElGamalAlgorithm\Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

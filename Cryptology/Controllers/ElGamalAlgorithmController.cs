@@ -7,7 +7,7 @@ using Cryptology.Models;
 
 namespace Cryptology.Controllers
 {
-    public class ElGamalEncryptionController : Controller
+    public class ElGamalAlgorithmController : Controller
     {
         // GET: ElGamalEncryption
         public ActionResult Index()
@@ -16,7 +16,7 @@ namespace Cryptology.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(ElGamalEncryptionModels model)
+        public ActionResult Index(ElGamalAlgorithmModels model)
         {
             if (ModelState.IsValid)
             {
@@ -36,7 +36,7 @@ namespace Cryptology.Controllers
             return RedirectToAction("Index");
         }
         [HttpPost]
-        public ActionResult Input(ElGamalEncryptionModels model)
+        public ActionResult Input(ElGamalAlgorithmModels model)
         {
             if (ModelState.IsValid)
             {

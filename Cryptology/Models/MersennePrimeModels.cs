@@ -8,8 +8,8 @@ namespace Cryptology.Models
 {
     public class MersennePrimeModels
     {
-        [Range(3, 64, ErrorMessage = "Пожалуйста, введите число от 3 до 64")]
+        [Range(3, 32, ErrorMessage = "Пожалуйста, введите число от 3 до 32")]
         [Required()]
-        public int p { get; set; }
+        public uint p { get; set; }
     }
 }

@@ -1,0 +1,117 @@
+﻿@model Cryptology.Models.ElGamalAlgorithmModels
+
+@{
+    ViewBag.Title = "El Gamal Algorithm";
+    List<long> C = new List<long>(ViewBag.b);
+    List<long> M = new List<long>(ViewBag.M);
+}
+
+<h2>El Gamal Encryption</h2>
+<table class="table table-bordered" style="font-size:larger;">
+    <tr class="success">
+        <th>
+            Пользователь B
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Пользователь B выбрал числа P = @Model.P, G = @Model.G, X = @Model.X
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Открытый ключ Y = G <sup>X</sup> mod P = @Model.G <sup>@Model.X</sup> mod @Model.P = @ViewBag.Y
+        </td>
+    </tr>
+    <tr class="success">
+        <th>
+            Пользователь A
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Выбрано число K = @Model.K, удовлетворяющее условиям K < P-1 и НОД(K, P-1)=1
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляем шифротекст:</p>
+            <p>a = G <sup>K</sup> mod P = @Model.G <sup>@Model.K</sup> mod @Model.P = @ViewBag.a</p>
+
+            @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+            {
+                <p>b<sub>@i</sub> = M * Y <sup>K</sup> mod P = @(Convert.ToInt32(Model.Text.ToCharArray()[i])-1040) * @ViewBag.Y <sup>@Model.K</sup> mod @Model.P = @C[i]</p>
+            }
+            <table class="table-bordered">
+                <tr>
+                    <th>Исходный текст</th>
+                    @foreach (var item in Model.Text.ToCharArray())
+                    {
+                        <th>@item</th>
+                    }
+                </tr>
+                <tr>
+                    <td>Преобразованная последовательность чисел</td>
+                    @foreach (var item in Model.Text.ToCharArray())
+                    {
+                        <td>@(Convert.ToInt32(item)-1040)</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Зашифрованная последовательность чисел</td>
+                    @foreach (var item in ViewBag.b)
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr class="success">
+        <th>
+            Пользователь B
+        </th>
+    </tr>
+    <tr>
+        <td>
+            a<sup>X</sup> mod P = @ViewBag.a <sup>@Model.X</sup> mod @Model.P = @ViewBag.ax<br />
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Нахождение обратного элемента a<sup>-X</sup> = @ViewBag.inv_ax
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляем исходный текст:</p>
+            @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+            {
+                <p>M<sub>@i</sub> = b<sub>@i</sub> * a <sup>-X</sup> mod P = @C[i] * @ViewBag.inv_ax mod @Model.P = @(M[i]-1040)</p>
+            }
+            <table class="table-bordered">
+                <tr>
+                    <td>Зашифрованная последовательность чисел</td>
+                    @foreach (var item in ViewBag.b)
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+                <tr>
+                    <td>Расшифрованная последовательность чисел</td>
+                    @foreach (var item in ViewBag.M)
+                    {
+                        <td>@(item-1040)</td>
+                    }
+                </tr>
+                <tr>
+                    <th>Расшифрованный текст</th>
+                    @foreach (var item in ViewBag.M)
+                    {
+                        <th>@Convert.ToChar(item)</th>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
