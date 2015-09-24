@@ -14,38 +14,54 @@ namespace Cryptology.Controllers
         {
             return View();
         }
+
         [HttpPost]
         public ActionResult Index(ElGamalEncryptionModels model)
         {
             if (ModelState.IsValid)
             {
-                var algs = new RSAAlgorithmController();
-
-                // Проверяем, подходит ли выбранное число K
-                if (algs.GCD(model.K, model.P - 1) != 1)
-                {
+                if (model.G >= model.P || model.X >= model.P)
                     return View("Index");
-                }
+
+                List<long> KList = new List<long>();
+
+                for (int i = 2; i < model.P - 1; i++)
+                    if (Algorithms.GCD(i, model.P - 1) == 1)
+                        KList.Add(i);
+
+                ViewBag.KList = KList;
+                return View("Input", model);
+            }
+
+            return RedirectToAction("Index");
+        }
+        [HttpPost]
+        public ActionResult Input(ElGamalEncryptionModels model)
+        {
+            if (ModelState.IsValid)
+            {
                 // вычисление открытого ключа
-                long y = algs.HornersMethod(model.G, model.X, model.P);
-
-
+                long y = Algorithms.HornersMethod(model.G, model.X, model.P);
+                
                 // Шифрование
-                var a = algs.HornersMethod(model.G, model.K, model.P);
+                var a = Algorithms.HornersMethod(model.G, model.K, model.P);
                 var b = from sim in model.Text.ToCharArray()
-                    select (algs.HornersMethod(y, model.K, model.P) * sim - 1040) % model.P;
-
-                List<long> C = new List<long>() { a };
-                C.AddRange(b);
+                        select Algorithms.HornersMethod(y, model.K, model.P, sim - 1040);
 
                 // Обратное преобразование
-                //var inv_a = algs.InverseElement(a)
-                //var M = from sim in C
-                //    select HornersMethod(sim, Kc, N) + 1040;
-
+                var ax = Algorithms.HornersMethod(a, model.X, model.P);
+                var inv_ax = Algorithms.ExtendedGCD(ax, model.P);
+                var M = from sim in b
+                        select (sim * inv_ax) % model.P + 1040;
+                
                 ViewBag.Y = y;
+                ViewBag.a = a;
+                ViewBag.b = b;
+                ViewBag.ax = ax;
+                ViewBag.inv_ax = inv_ax;
+                ViewBag.M = M;
 
-                return View("View", model);
+                return View("Echo", model);
             }
 
             return RedirectToAction("Index");

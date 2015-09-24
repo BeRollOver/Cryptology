@@ -9,16 +9,20 @@ namespace Cryptology.Models
 {
     public class ElGamalEncryptionModels
     {
-        [Required]
         [Display(Name = "Текст для шифрования: ")]
         [RegularExpression("[а-яА-Я]{3,40}$")]
         public string Text { get; set; }
-        [Required]
+
+        [Range(0, long.MaxValue)]
         public long K { get; set; }
+
+        [Range(64, long.MaxValue)]
         [Required]
         public long P { get; set; }
+
         [Required]
         public long G { get; set; }
+
         [Required]
         public long X { get; set; }
     }

@@ -249,7 +249,9 @@
     <Content Include="Views\EuclideanAlgorithm\Echo.cshtml" />
     <Content Include="Views\RSAAlgorithm\Echo.cshtml" />
     <Content Include="Views\RSAAlgorithm\Index.cshtml" />
+    <Content Include="Views\ElGamalEncryption\Echo.cshtml" />
     <Content Include="Views\ElGamalEncryption\Index.cshtml" />
+    <Content Include="Views\ElGamalEncryption\Input.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

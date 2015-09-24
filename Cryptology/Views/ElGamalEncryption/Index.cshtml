@@ -12,29 +12,15 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Данные пользователя А</h4>
+        <h4>Данные пользователя B</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.Text, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
-            </div>
-        </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.K, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.K, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.K, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <h4>Данные пользователя B</h4>
         <div class="form-group">
             @Html.LabelFor(model => model.P, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
+                @Html.Hidden("Text", "", new { htmlAttributes = new { @class = "form-control" } })
+                @Html.Hidden("K", 65, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.EditorFor(model => model.P, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.P, "", new { @class = "text-danger" })
             </div>

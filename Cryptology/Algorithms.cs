@@ -15,6 +15,33 @@ namespace Cryptology
             return a;
         }
 
+        // расширенный Алгоритм Евклида
+        public static long ExtendedGCD(long a, long n)
+        {
+            long[] u = new long[] { 0, 1, n };
+            long[] v = new long[] { 1, 0, a };
+            long q, t;
+
+            while (u[2] != 1 && u[2] != 0 && v[2] != 0)
+            {
+                q = u[2] / v[2];
+                for (int i = 0; i < 3; i++)
+                {
+                    t = u[i] - q * v[i];
+                    u[i] = v[i];
+                    v[i] = t;
+                }
+            }
+            if (u[0] < 0) u[0] = n + u[0];
+
+            if (u[2] == 1)
+            {
+                return u[0];
+            }
+
+            return 0;
+        }
+
         // Алгоритм вычисления обратного элемента для небольших чисел
         public static long InverseElement(long a, long n)
         {
@@ -24,7 +51,7 @@ namespace Cryptology
         }
 
         // схема Горнера
-        public static long HornersMethod(long a, long x, long m)
+        public static long HornersMethod(long a, long x, long m, long n = 1)
         {
             long y = (x % 2 == 1) ? a : 1, r = a;
             if (m == 0) throw new Exception("DivideByZero");
@@ -33,11 +60,13 @@ namespace Cryptology
 
             long k = (long)(Math.Log(x) / Math.Log(2));
             if ((Math.Log(x) / Math.Log(2)) % 1D != 0D) k++;
-            if (k > 64 || k == 0) throw new Exception("NoAnswer");
+            //if (k > 64 || k == 0) throw new Exception("NoAnswer");
 
             for (int i = 1; i < k; i++)
             {
                 r = (r * r) % m;
+                if (i == k - 1)
+                    r *= n;
                 if ((x >> i) % 2 == 1) y = (y * r) % m;
             }
             return y;
