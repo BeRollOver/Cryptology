@@ -1,8 +1,103 @@
 ﻿@model Cryptology.Models.RSAAlgorithmModels
 
 @{
-    ViewBag.Title = "Echo";
+    ViewBag.Title = "RSA Algorithm";
+    var local_m = 0;
+    var local_m1 = 0;
 }
 
-<h2>Echo</h2>
+<h2>RSA Algorithm</h2>
 
+<table class="table table-bordered" style="font-size:larger;">
+    <tr class="success">
+        <th>
+            Пользователь A
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Пользователь A выбрал числа P=@Model.P и Q=@Model.Q
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляем N=@ViewBag.N
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляем функцию Эйлера ф(N)=@ViewBag.F
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Открытый ключ K<sub>o</sub>=@Model.Ko соответствует условиям 1 < K<sub>o</sub> < ф(N) и НОД(K<sub>o</sub>, ф(N))=1
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляем закрытый ключ K<sub>c</sub>=@ViewBag.Kc
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Разбиваем исходный текст на блоки чисел. Вычисляем хэш:</p>
+            @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+            {
+                <p>m = m xor M<sub>@i</sub><sup>K<sub>o</sub></sup> mod N = @local_m xor @(Convert.ToInt32(Model.Text.ToCharArray()[i]) - 1040)<sup>@Model.Ko</sup> mod @ViewBag.N = @(local_m ^= Algorithms.HornersMethod(Model.Text.ToCharArray()[i] - 1040, Model.Ko, ViewBag.N))</p>
+            }
+            <p>Получен хэш из текста: m = @local_m</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            ЭЦП: S = m<sup>K<sub>c</sub></sup> mod N = @local_m <sup>@ViewBag.Kc</sup> mod @ViewBag.N = @ViewBag.S
+        </td>
+    </tr>
+    <tr>
+        <td>Передача созданной цифровой подписи (M, S)</td>
+    </tr>
+    <tr class="success">
+        <th>
+            Пользователь B
+        </th>
+    </tr>
+    <tr>
+        <td>
+            Пользователь B принял открытый ключ K<sub>o</sub>=@Model.Ko и N=@ViewBag.N и цифровую подпись (M, S)
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Проверка подписи:</p>
+            <p>Получение первой оценки:</p>
+            @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+            {
+                <p>m = m xor M<sub>@i</sub><sup>K<sub>o</sub></sup> mod N = @local_m1 xor @(Convert.ToInt32(Model.Text.ToCharArray()[i]) - 1040)<sup>@Model.Ko</sup> mod @ViewBag.N = @(local_m1 ^= Algorithms.HornersMethod(Model.Text.ToCharArray()[i] - 1040, Model.Ko, ViewBag.N))</p>
+            }
+            <p>m' = @ViewBag.m1</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Получение второй оценки:</p>
+            <p>m'' = S<sup>K<sub>o</sub></sup> mod N = @ViewBag.S<sup>@Model.Ko</sup> mod @ViewBag.N = @ViewBag.m2</p>
+        </td>
+    </tr>
+    @if (@ViewBag.m1 == @ViewBag.m2)
+    {
+        <tr>
+            <td>
+                Числа m' и m'' равны: подпись верна.
+            </td>
+        </tr>
+    }
+    else
+    {
+    <tr>
+        <td>
+            Числа m' и m'' не равны: подпись неверна.
+        </td>
+    </tr>
+    }
+</table>

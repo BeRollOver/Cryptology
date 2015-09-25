@@ -170,6 +170,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ElGamalAlgorithmController.cs" />
+    <Compile Include="Controllers\ElGamalSAController.cs" />
     <Compile Include="Controllers\EuclideanAlgorithmController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -255,6 +256,9 @@
     <Content Include="Views\ElGamalAlgorithm\Input.cshtml" />
     <Content Include="Views\RSASA\Index.cshtml" />
     <Content Include="Views\RSASA\Echo.cshtml" />
+    <Content Include="Views\ElGamalSA\Index.cshtml" />
+    <Content Include="Views\ElGamalSA\Input.cshtml" />
+    <Content Include="Views\ElGamalSA\Echo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

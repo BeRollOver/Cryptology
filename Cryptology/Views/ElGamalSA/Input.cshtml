@@ -1,0 +1,47 @@
+﻿@model Cryptology.Models.ElGamalAlgorithmModels
+
+@{
+    ViewBag.Title = "ElGamal Algorithm";
+}
+
+<h2>ElGamal Algorithm</h2>
+
+
+@using (Html.BeginForm("Input", "ElGamalSA"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-horizontal">
+        <h4>Секретная часть данных</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.X, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.X, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.X, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.K, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.K, new SelectList(ViewBag.KList), new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.K, "", new { @class = "text-danger" })
+                                @Html.Hidden("Text", Model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.Hidden("P", Model.P, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.Hidden("G", Model.G, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -61,6 +61,7 @@ namespace Cryptology.Controllers
                 ViewBag.N = N;
                 ViewBag.F = F;
                 ViewBag.m = m;
+                ViewBag.S = S;
                 ViewBag.m1 = m1;
                 ViewBag.m2 = m2;
 
