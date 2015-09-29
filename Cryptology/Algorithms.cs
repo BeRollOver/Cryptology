@@ -39,6 +39,9 @@ namespace Cryptology
                 return u[0];
             }
 
+            if (v[2] == 0)
+                throw new Exception("DivideByZero");
+
             return 0;
         }
 

@@ -9,16 +9,17 @@ namespace Cryptology.Models
 {
     public class RSAAlgorithmModels
     {
-        [Required]
         [Display(Name = "Текст для шифрования: ")]
         [RegularExpression("[а-яА-Я]{3,40}$")]
-        public string Text { get; set; }
+        public string Text { get; set; } = "";
         [Required]
-        public long P { get; set; }
+        [Range(64, long.MaxValue)]
+        public long P { get; set; } = 0;
         [Required]
-        public long Q { get; set; }
+        [Range(0, long.MaxValue)]
+        public long Q { get; set; } = 0;
         [Required]
         [Display(Name = "Открытый ключ: ")]
-        public long Ko { get; set; }
+        public long Ko { get; set; } = 0;
     }
 }
