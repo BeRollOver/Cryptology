@@ -31,7 +31,32 @@ namespace Cryptology.Controllers
             byte[] H = hash.GetHash(Encoding.Default.GetBytes(model.Text));
             string sign = DS.SignGen(H, d);
             bool result = DS.SignVer(H, sign, Q);
-            return View();
+
+            ViewBag.d = d;
+            ViewBag.Q = Q;
+            ViewBag.H = H;
+            ViewBag.alpha = DS.alpha;
+            ViewBag.e = DS.e;
+            ViewBag.k = DS.k;
+            ViewBag.C = DS.C;
+            ViewBag.r = DS.r;
+            ViewBag.s = DS.s;
+            ViewBag.sign = sign;
+
+            ViewBag.n = DS.n;
+            ViewBag.encr_r = DS.encr_r;
+            ViewBag.encr_s = DS.encr_s;
+            ViewBag.encr_alpha = DS.encr_alpha;
+            ViewBag.encr_e = DS.encr_e;
+            ViewBag.v = DS.v;
+            ViewBag.z1 = DS.z1;
+            ViewBag.z2 = DS.z2;
+            ViewBag.A = DS.A;
+            ViewBag.B = DS.B;
+            ViewBag.R = DS.R;
+            ViewBag.encr_C = DS.encr_C;
+
+            return View("Echo", model);
         }
     }
 }

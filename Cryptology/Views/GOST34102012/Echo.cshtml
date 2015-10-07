@@ -1,0 +1,202 @@
+﻿@model Cryptology.Models.GOST34102012Models
+
+@{
+    ViewBag.Title = "ГОСТ 34.10-2012";
+    ECPoint Q = ViewBag.Q;
+    ECPoint C = ViewBag.C;
+    ECPoint encr_C = ViewBag.encr_C;
+}
+
+<h2>ГОСТ 34.10-2012</h2>
+
+<table class="table table-bordered table-hover" style="font-size:larger;">
+    <tr class="success">
+        <td>Пользователь A</td>
+    </tr>
+    <tr>
+        <td>
+            <p>Для формирования ЭЦП выбрана эллиптическая кривая над конечным полем NISTP192:</p>
+            <p>y<sup>2</sup> = x<sup>3</sup> + ax + b, где:</p>
+            <p>
+                <b>Параметры кривой:</b><br />
+                a = @Model.a<br />
+                b = @Model.b
+            </p>
+            <p>
+                <b>Модуль эллиптической кривой (обобщёное число Мерсена 2<sup>192</sup>-2<sup>64</sup>-1):</b><br />
+                p = @Model.p
+            </p>
+            <p>
+                <b>Точка на эллиптической кривой:</b><br />
+                G (602046282375688656758213480587526111916698976636884684818, 174050332293622031404857552280219410364023488927386650641)
+            </p>
+            <p>
+                <b>Порядок точки G:</b><br />
+                n = @Model.n
+            </p>
+            <p>
+                <b>Кофактор (отношения порядка кривой и точки)</b><br />
+                h = 1
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Формируется закрытый ключ <b>d</b> - случайное целое число, удовлетворяющее неравенству 0 < d < n</p>
+            <p>d = @ViewBag.d</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>На базе закрытого ключа d, формируется открытый ключ Q = d * G^</p>
+            <p>Q (@Q.x, @Q.y)</p>
+        </td>
+    </tr>
+    <tr id="hash">
+        <td>
+            <p>Исходное сообщение преобразуется в массив байтов</p>
+            <table class="table-bordered table-condensed">
+                <tr>
+                    @foreach (var item in Model.Text.ToCharArray())
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+                <tr>
+                    @foreach (var item in @System.Text.Encoding.Default.GetBytes(Model.Text))
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется хеш сообщения <b>H</b> с использованием хеш-функции Стрибог:</p>
+            <table class="table-bordered table-condensed">
+                <tr>
+                    @foreach (var item in @ViewBag.H)
+                    {
+                        <td>@item</td>
+                    }
+                </tr>
+            </table>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется <b>α</b> - двоичное представление H</p>
+            <p>α = <i>@ViewBag.alpha</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется число <b>e</b> = α mod n</p>
+            <p>α = @ViewBag.alpha mod @Model.n = <i>@ViewBag.e</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Генерируется случаное целое число <b>k</b>, удовлетворяющее неравенству 0 < k < n</p>
+            <p>k = <i>@ViewBag.k</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется точку <b>C</b> = kG</p>
+            <p>C (@C.x, @C.y)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Находится <b>r</b> = x<sub>C</sub> mod n</p>
+            <p>r = @C.x mod @Model.n = <i>@ViewBag.r</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Находится <b>s</b> = (rd + ke)</p>
+            <p>s = (@ViewBag.r * @ViewBag.d + @ViewBag.k * @ViewBag.e) = <i>@ViewBag.s</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>ЭЦП имеет вид <b>r||s</b> (в шестнадцатиричной форме дополненная нулями до длины модуля p):</p>
+            <p>
+                <i>@ViewBag.sign</i>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Пользователю B пересылается сообщение, ЭЦП и открытый ключ.</p>
+        </td>
+    </tr>
+    <tr class="success">
+        <td>Пользователь B</td>
+    </tr>
+    <tr>
+        <td>
+            <p>Восстанавливаются числа r и s:</p>
+            <p>
+                r = @ViewBag.encr_r<br />
+                s = @ViewBag.encr_s
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Преобразуется исходное сообщение в массив байтов и вычисляется хеш сообщения H с использованием хеш-функции Стрибог (<a href="#hash">см. действия пользователя A</a>)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется <b>α</b> - двоичное представление H</p>
+            <p>α = <i>@ViewBag.encr_alpha</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется число <b>e</b> = α mod n</p>
+            <p>α = @ViewBag.alpha mod @Model.n = <i>@ViewBag.encr_e</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется число <b>v</b> = e<sup>-1</sup> mod n</p>
+            <p>v = @ViewBag.v</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляются значения <b>z<sub>1</sub></b> = s*v mod n и <b>z<sub>2</sub></b> = -r*v mod n:</p>
+            <p>
+                z<sub>1</sub> = @ViewBag.encr_s * @ViewBag.v mod @ViewBag.n = <i>@ViewBag.z1</i><br />
+                z<sub>2</sub> = -@ViewBag.encr_r * @ViewBag.v mod @ViewBag.n = <i>@ViewBag.z2</i>
+            </p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Вычисляется точка <b>C</b> = z<sub>1</sub>G + z<sub>2</sub>*Q</p>
+            <p>C (@encr_C.x, @encr_C.y))</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Определяется <b>R</b> = x<sub>C</sub> mod n</p>
+            <p>R = @encr_C.x mod @ViewBag.n = <i>@ViewBag.R</i></p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Сравниваются r и R:</p>
+            <p>
+                @ViewBag.encr_r r<br />
+                @ViewBag.R R
+            </p>
+            <p>Если r = R, то подписи верны.</p>
+        </td>
+    </tr>
+</table>

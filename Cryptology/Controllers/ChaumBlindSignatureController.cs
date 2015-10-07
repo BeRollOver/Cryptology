@@ -33,6 +33,8 @@ namespace Cryptology.Controllers
 
                 ViewBag.KList = KList;
 
+                ViewBag.Kc = Algorithms.ExtendedGCD(model.Ko, model.F);
+
                 return View("Input", model);
             }
 
@@ -46,7 +48,6 @@ namespace Cryptology.Controllers
             long m1 = 0;
             long s1 = 0;
             long s = 0;
-            long mm = 0;
 
             // Сторона B
             long Kc = Algorithms.ExtendedGCD(model.Ko, model.F);
@@ -70,14 +71,14 @@ namespace Cryptology.Controllers
 
             // Сторона A 
             s = (inv_k * s1) % model.N;
-            mm = Algorithms.HornersMethod(m, Kc, model.N);
 
-            return View("Echo");
-        }
-        public ActionResult Echo(ChaumBlindSignatureModels model)
-        {
-            if (ModelState.IsValid) ;
-            return View();
+            ViewBag.Kc = Kc;
+            ViewBag.inv_k = inv_k;
+            ViewBag.m1 = m1;
+            ViewBag.s1 = s1;
+            ViewBag.s = s;
+
+            return View("Echo", model);
         }
     }
 }

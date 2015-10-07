@@ -53,6 +53,13 @@ namespace Cryptology.Controllers
             // Вычисление общего ключа пользователем B
             long kB = (Algorithms.HornersMethod(zA, model.y, model.p) * Algorithms.HornersMethod(mesA, model.b, model.p)) % model.p;
 
+            ViewBag.mesA = mesA;
+            ViewBag.mesB = mesB;
+            ViewBag.zA = zA;
+            ViewBag.zB = zB;
+            ViewBag.kA = kA;
+            ViewBag.kB = kB;
+
             return View("Echo");
         }
     }

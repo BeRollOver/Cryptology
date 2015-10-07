@@ -1,12 +1,106 @@
 ﻿@model Cryptology.Models.ChaumBlindSignatureModels
 
 @{
-    ViewBag.Title = "Echo";
+    ViewBag.Title = "Слепая подпись Чаума";
+    long local_m = 0;
 }
 
-<h2>Echo</h2>
+<h2>Цифровая слепая подпись Чаума</h2>
 
-
+<table class="table table-hover table-bordered">
+    <tr>
+        <td class="success">Пользователь B</td>
+    </tr>
+    <tr>
+        <td>
+            Заданы простые числа P = @Model.P и Q = @Model.Q. Задан открытый ключ K<sub>o</sub> = @Model.Ko.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Общий модуль N = P*Q = @Model.P*@Model.Q = @Model.N. Функция Эйлера ф(N) = (P-1)*(Q-1) = (@Model.P-1)*(@Model.Q-1) = @Model.F.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Ключ K<sub>o</sub> удовлетворяет условиям 1 < K<sub>o</sub> < ф(N) и НОД(K<sub>o</sub>, ф(N)) = 1.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляется секретынй ключ K<sub>c</sub> = K<sub>o</sub><sup>-1</sup> mod ф(N) = @Model.Ko<sup>-1</sup> mod @Model.F = @ViewBag.Kc.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Передаются пользователю A числа N = @Model.N и K<sub>o</sub> = @Model.Ko
+        </td>
+    </tr>
+    <tr>
+        <td class="success">Пользователь A</td>
+    </tr>
+    <tr>
+        <td>
+            Получили от B два числа N = @Model.N и K<sub>o</sub> = @Model.Ko.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Исходный текст разбивается на блоки чисел. Вычисление хэша:</p>
+            @for (int i = 0; i < Model.Text.ToCharArray().Count(); i++)
+            {
+                <p>m = m xor M<sub>@i</sub><sup>K<sub>o</sub></sup> mod N = @local_m xor @(Convert.ToInt32(Model.Text.ToCharArray()[i]) - 1040)<sup>@Model.Ko</sup> mod @Model.N = @(local_m ^= Algorithms.HornersMethod(Model.Text.ToCharArray()[i] - 1040, Model.Ko, Model.N))</p>
+            }
+            <p>Получен хэш из текста: m = @local_m.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Число k = @Model.k удовлетворяет условиям 0 < k < N и НОД(k, N) = 1.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляется обратный элемент для числа k: k<sup>-1</sup> mod N = @Model.k<sup>-1</sup> mod @Model.N = @ViewBag.inv_k.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Находится замаскированное сообщение m' = m*(k<sup>K<sub>o</sub></sup> mod N) mod N = @local_m * (@Model.k <sup>@Model.Ko</sup> mod @Model.N) mod @Model.N = @ViewBag.m1.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Передаём пользователю B замаскированное сообщение m' = @ViewBag.m1.
+        </td>
+    </tr>
+    <tr>
+        <td class="success">Пользователь B</td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляется подпись s' = m'<sup>K<sub>c</sub></sup> mod N = @ViewBag.m1<sup>@ViewBag.Kc</sup> mod @Model.N = @ViewBag.s1.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Передаём пользователю A подпись s' = @ViewBag.s1.
+        </td>
+    </tr>
+    <tr>
+        <td class="success">Пользователь A</td>
+    </tr>
+    <tr>
+        <td>
+            Вычисляется подпись s = k<sup>-1</sup> * s' mod N = @ViewBag.inv_k<sup>@ViewBag.s1</sup> * @ViewBag.s1 mod @Model.N = @ViewBag.s.
+        </td>
+    </tr>
+    <tr>
+        <td>
+            Подпись s = @ViewBag.s является подписью стороны B на сообщении m.
+        </td>
+    </tr>
+</table>
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 }

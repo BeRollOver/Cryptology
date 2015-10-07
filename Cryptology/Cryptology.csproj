@@ -278,6 +278,7 @@
     <Content Include="Views\DiffieHellman\Index.cshtml" />
     <Content Include="Views\DiffieHellman\Input.cshtml" />
     <Content Include="Views\DiffieHellman\Echo.cshtml" />
+    <Content Include="Views\GOST34102012\Echo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

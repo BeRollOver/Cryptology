@@ -299,7 +299,7 @@ namespace Cryptology
                 }
             }
             else
-            // Для хэш-функции с длиной вывода 512 бит
+            // Для хэш-функции с длиной вывода 256 бит
             if (outLen == 256)
             {
                 for (int i = 0; i < 64; i++)
@@ -357,12 +357,30 @@ namespace Cryptology
     }
     class DSGost
     {
-        private BigInteger p = new BigInteger();
-        private BigInteger a = new BigInteger();
-        private BigInteger b = new BigInteger();
-        private BigInteger n = new BigInteger();
-        private byte[] xG;
-        private ECPoint G = new ECPoint();
+        public BigInteger p = new BigInteger();
+        public BigInteger a = new BigInteger();
+        public BigInteger b = new BigInteger();
+        public BigInteger n = new BigInteger();
+        public byte[] xG;
+        public ECPoint G = new ECPoint();
+        public BigInteger alpha;
+        public BigInteger e;
+        public BigInteger k;
+        public ECPoint C;
+        public BigInteger r;
+        public BigInteger s;
+
+        public BigInteger encr_r;
+        public BigInteger encr_s;
+        public BigInteger encr_alpha;
+        public BigInteger encr_e;
+        public BigInteger v;
+        public BigInteger z1;
+        public BigInteger z2;
+        public ECPoint A;
+        public ECPoint B;
+        public BigInteger R;
+        public ECPoint encr_C;
 
         public DSGost(BigInteger p, BigInteger a, BigInteger b, BigInteger n, byte[] xG)
         {
@@ -458,14 +476,14 @@ namespace Cryptology
         //подписываем сообщение
         public string SignGen(byte[] h, BigInteger d)
         {
-            BigInteger alpha = new BigInteger(h);
-            BigInteger e = alpha % n;
+            alpha = new BigInteger(h);
+            e = alpha % n;
             if (e == 0)
                 e = 1;
-            BigInteger k = new BigInteger();
-            ECPoint C = new ECPoint();
-            BigInteger r = new BigInteger();
-            BigInteger s = new BigInteger();
+            k = new BigInteger();
+            C = new ECPoint();
+            r = new BigInteger();
+            s = new BigInteger();
             do
             {
                 do
@@ -486,30 +504,30 @@ namespace Cryptology
         {
             string Rvector = sign.Substring(0, n.bitCount() / 4);
             string Svector = sign.Substring(n.bitCount() / 4, n.bitCount() / 4);
-            BigInteger r = new BigInteger(Rvector, 16);
-            BigInteger s = new BigInteger(Svector, 16);
-            if ((r < 1) || (r > (n - 1)) || (s < 1) || (s > (n - 1)))
+            encr_r = new BigInteger(Rvector, 16);
+            encr_s = new BigInteger(Svector, 16);
+            if ((encr_r < 1) || (encr_r > (n - 1)) || (encr_s < 1) || (encr_s > (n - 1)))
                 return false;
-            BigInteger alpha = new BigInteger(H);
-            BigInteger e = alpha % n;
-            if (e == 0)
-                e = 1;
-            BigInteger v = e.modInverse(n);
-            BigInteger z1 = (s * v) % n;
-            BigInteger z2 = n + ((-(r * v)) % n);
+            encr_alpha = new BigInteger(H);
+            encr_e = encr_alpha % n;
+            if (encr_e == 0)
+                encr_e = 1;
+            v = encr_e.modInverse(n);
+            z1 = (encr_s * v) % n;
+            z2 = n + ((-(encr_r * v)) % n);
             this.G = GDecompression();
-            ECPoint A = ECPoint.multiply(z1, G);
-            ECPoint B = ECPoint.multiply(z2, Q);
-            ECPoint C = A + B;
-            BigInteger R = C.x % n;
-            if (R == r)
+            A = ECPoint.multiply(z1, G);
+            B = ECPoint.multiply(z2, Q);
+            encr_C = A + B;
+            R = encr_C.x % n;
+            if (R == encr_r)
                 return true;
             else
                 return false;
         }
 
         //дополняем подпись нулями слева до длины n, где n - длина модуля в битах
-        private string padding(string input, int size)
+        public string padding(string input, int size)
         {
             if (input.Length < size)
             {
