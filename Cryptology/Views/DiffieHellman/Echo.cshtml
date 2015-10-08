@@ -1,8 +1,59 @@
 ﻿@model Cryptology.Models.MTIModels
 
 @{
-    ViewBag.Title = "Echo";
+    ViewBag.Title = "Схема MTI";
 }
 
-<h2>Echo</h2>
+<h2>Схема MTI</h2>
 
+<table class="table table-bordered">
+    <tr class="success">
+        <th colspan="2">
+            Схема MTI
+        </th>
+    </tr>
+    <tr>
+        <th class="active">Пользователь A</th>
+        <th class="active">Пользователь B</th>
+    </tr>
+    <tr>
+        <td>
+            <p>Пользователь A вычисляет сообщение для B при x = @Model.x и a = @Model.a</p>
+            <p>mes<sub>A</sub> = α<sup>x</sup> mod p = @Model.alpha<sup>@Model.x</sup> mod @Model.p = @ViewBag.mesA</p>
+            <p>z<sub>A</sub> = α<sup>a</sup> mod p = @Model.alpha<sup>@Model.a</sup> mod @Model.p = @ViewBag.zA</p>
+            <p>Передача сообщения пользователю B</p>
+        </td>
+        <td>
+            <p>Пользователь B вычисляет сообщение для A при y = @Model.y и b = @Model.b</p>
+            <p>mes<sub>B</sub> = α<sup>x</sup> mod p = @Model.alpha<sup>@Model.y</sup> mod @Model.p = @ViewBag.mesB</p>
+            <p>z<sub>B</sub> = α<sup>b</sup> mod p = @Model.alpha<sup>@Model.a</sup> mod @Model.p = @ViewBag.zB</p>
+            <p>Передача сообщения пользователю A</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Общий ключ для A:</p>
+            <p>k = (mes<sub>B</sub><sup>a</sup> mod p) * (z<sub>B</sub><sup>x</sup> mod p) = (@ViewBag.zB<sup>@Model.a</sup> mod @Model.p) * (@ViewBag.zB<sup>@Model.x</sup> mod @Model.p) = @ViewBag.kA</p>
+        </td>
+        <td>
+            <p>Общий ключ для B:</p>
+            <p>k = (mes<sub>A</sub><sup>b</sup> mod p) * (z<sub>A</sub><sup>y</sup> mod p) = (@ViewBag.zA<sup>@Model.b</sup> mod @Model.p) * (@ViewBag.zA<sup>@Model.y</sup> mod @Model.p) = @ViewBag.kB</p>
+        </td>
+    </tr>
+    @if (ViewBag.kA == ViewBag.kB)
+    {
+        <tr>
+            <th class="success" colspan="2">
+                Ключи равны
+            </th>
+        </tr>
+    }
+    else
+    {
+        <tr>
+            <th class="warning" colspan="2">
+                Ключи не равны
+            </th>
+        </tr>
+    }
+    </table>

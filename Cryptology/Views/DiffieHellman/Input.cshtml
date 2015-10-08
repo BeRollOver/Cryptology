@@ -1,11 +1,60 @@
 ﻿@model Cryptology.Models.MTIModels
 
 @{
-    ViewBag.Title = "Input";
+    ViewBag.Title = "Схема Диффи-Хеллмана";
 }
 
-<h2>Input</h2>
+<h2>Схема Диффи-Хеллмана</h2>
 
+<table class="table table-bordered">
+    <tr class="success">
+        <th colspan="2">
+            Схема Диффи-Хеллмана
+        </th>
+    </tr>
+    <tr>
+        <th class="active">Пользователь A</th>
+        <th class="active">Пользователь B</th>
+    </tr>
+    <tr>
+        <td>
+            <p>Пользователь A вычисляет сообщение для B при x = @Model.x</p>
+            <p>mes<sub>A</sub> = α<sup>x</sup> mod p = @Model.alpha<sup>@Model.x</sup> mod @Model.p = @ViewBag.mesA</p>
+            <p>Передача сообщения пользователю B</p>
+        </td>
+        <td>
+            <p>Пользователь B вычисляет сообщение для A при y = @Model.y</p>
+            <p>mes<sub>B</sub> = α<sup>x</sup> mod p = @Model.alpha<sup>@Model.y</sup> mod @Model.p = @ViewBag.mesB</p>
+            <p>Передача сообщения пользователю A</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Общий ключ для A:</p>
+            <p>k = mes<sub>B</sub><sup>x</sup> mod p = @ViewBag.mesB<sup>@Model.x</sup> mod @Model.p = @ViewBag.kA</p>
+        </td>
+        <td>
+            <p>Общий ключ для B:</p>
+            <p>k = mes<sub>A</sub><sup>y</sup> mod p = @ViewBag.mesA<sup>@Model.y</sup> mod @Model.p = @ViewBag.kB</p>
+        </td>
+    </tr>
+    @if (ViewBag.kA == ViewBag.kB)
+    {
+        <tr>
+        <th class="success" colspan="2">
+            Ключи равны
+        </th>
+    </tr>
+    }
+    else
+    { 
+    <tr>
+        <th class="warning" colspan="2">
+            Ключи не равны
+        </th>
+    </tr>
+    }
+</table>
 
 @using (Html.BeginForm("Input", "DiffieHellman")) 
 {

@@ -60,7 +60,7 @@ namespace Cryptology.Controllers
             ViewBag.kA = kA;
             ViewBag.kB = kB;
 
-            return View("Echo");
+            return View("Echo", model);
         }
     }
 }
