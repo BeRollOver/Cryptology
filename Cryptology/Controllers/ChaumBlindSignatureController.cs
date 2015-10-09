@@ -72,11 +72,14 @@ namespace Cryptology.Controllers
             // Сторона A 
             s = (inv_k * s1) % model.N;
 
+            long mm = Algorithms.HornersMethod(s, model.Ko, model.N);
+
             ViewBag.Kc = Kc;
             ViewBag.inv_k = inv_k;
             ViewBag.m1 = m1;
             ViewBag.s1 = s1;
             ViewBag.s = s;
+            ViewBag.mm = mm;
 
             return View("Echo", model);
         }
